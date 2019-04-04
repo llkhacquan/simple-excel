@@ -2,12 +2,16 @@ package quannk.test.excel;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.util.Objects;
 
 public class ExcelTest {
+
+	private static final Logger LOG = LoggerFactory.getLogger(ExcelTest.class);
 
 	private static void compareResult(String s1, String s2) {
 		String[] ss1 = s1.split("\n");
@@ -25,6 +29,9 @@ public class ExcelTest {
 
 	/**
 	 * read the data folder and do auto test
+	 *
+	 * in.x contains input
+	 * out.x (if exists) contains expected output; if out.x does not exist, it means there should be a CircularDependencies
 	 */
 	@Test
 	public void testAuto() throws IOException {
@@ -51,7 +58,7 @@ public class ExcelTest {
 					throw new RuntimeException(e);
 				}
 			}
-
+			LOG.info("Done test with {}", inFile);
 		}
 	}
 }
