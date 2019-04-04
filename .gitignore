@@ -17,3 +17,4 @@ gradle-app.setting
 build/
 src/main/resources/
 src/test/resources/
+lib/
