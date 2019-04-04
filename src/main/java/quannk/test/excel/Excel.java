@@ -2,11 +2,15 @@ package quannk.test.excel;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.*;
 
 public final class Excel {
+
+	private static final Logger LOG = LoggerFactory.getLogger(Excel.class);
 
 	private final Set<String> computingCell = new HashSet<>();
 	private final Set<String> cellNeedComputation = new HashSet<>();
@@ -29,6 +33,7 @@ public final class Excel {
 	public static void main(String[] args) throws IOException {
 		InputStream in = System.in;
 		if (args.length > 0) {
+			LOG.info("Running with input file:{}", args[0]);
 			in = new FileInputStream(new File(args[0]));
 		}
 		Excel excel = new Excel(readInput(in));

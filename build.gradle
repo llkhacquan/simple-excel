@@ -39,6 +39,17 @@ task copyLib(type: Sync) {
     into "lib"
     from configurations.runtime
 }
+
 task compile {
     dependsOn << [copyLib, "compileJava"]
+}
+
+task mrProper(type: Exec) {
+    description "Removes content of directory 'lib'"
+    executable "sh"
+    args "-c", "rm -rf lib/*"
+}
+
+clean {
+    dependsOn << [mrProper]
 }
