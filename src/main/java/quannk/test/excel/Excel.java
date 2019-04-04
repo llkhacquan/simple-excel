@@ -1,5 +1,6 @@
 package quannk.test.excel;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 
 import java.io.*;
@@ -74,6 +75,14 @@ public final class Excel {
 			default:
 				throw new RuntimeException("Not a valid operator:" + operator);
 		}
+	}
+
+	/**
+	 * @return copy of the internal data
+	 */
+	@VisibleForTesting
+	public HashMap<String, Cell> getData() {
+		return new HashMap<>(name2cellMap);
 	}
 
 	public void print(boolean niceView, PrintStream out) {
