@@ -22,8 +22,15 @@ public final class Excel {
 		}
 	}
 
+	/**
+	 * Run the application as said in the problem; if a file is provided in the argument, read data from file
+	 */
 	public static void main(String[] args) throws IOException {
-		Excel excel = new Excel(readInput(new FileInputStream(new File("data/in.2"))));
+		InputStream in = System.in;
+		if (args.length > 0) {
+			in = new FileInputStream(new File(args[0]));
+		}
+		Excel excel = new Excel(readInput(in));
 		try {
 			excel.compute();
 			excel.print(false, System.out);

@@ -2,6 +2,13 @@ plugins {
     id 'java'
 }
 
+apply plugin:'application'
+mainClassName = "quannk.test.excel.Excel"
+
+run {
+    standardInput = System.in
+}
+
 group 'quannk'
 version '1.0-SNAPSHOT'
 
@@ -24,4 +31,12 @@ dependencies {
 
     compile group: 'org.jetbrains', name: 'annotations', version: '17.0.0'
 
+}
+
+task copyLib(type: Sync) {
+    into "lib"
+    from configurations.runtime
+}
+task compile {
+    dependsOn << [copyLib, "compileJava"]
 }
