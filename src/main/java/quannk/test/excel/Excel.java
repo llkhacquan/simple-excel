@@ -95,7 +95,7 @@ public final class Excel {
 		while (!cellNeedComputation.isEmpty()) {
 			String nextCell = cellNeedComputation.stream().findAny().get();
 			Preconditions.checkArgument(!name2cellMap.get(nextCell).isComputed());
-			name2cellMap.get(nextCell).setDoubleValue(compute(nextCell));
+			compute(nextCell);
 		}
 	}
 
@@ -132,14 +132,17 @@ public final class Excel {
 			} else { // a cell
 				Preconditions.checkState(Cell.isValidCellName(s), "Not a valid cell name:" + s);
 				try {
-					stack.push(compute(s));
+					double d = compute(s);
+					stack.push(d);
 				} catch (CircularDependencies e) {
 					throw new CircularDependencies(e.cellName1, s);
 				}
 			}
 		}
 		Preconditions.checkState(stack.size() == 1, "Something wrong with expression: " + expression);
-		return stack.pop();
+		double result = stack.pop();
+		cell.setDoubleValue(result);
+		return result;
 	}
 
 	private boolean isOperator(String s) {
