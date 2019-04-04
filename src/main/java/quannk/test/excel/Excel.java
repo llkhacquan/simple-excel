@@ -34,7 +34,7 @@ public final class Excel {
 		try {
 			excel.compute();
 			excel.print(false, System.out);
-		} catch (CircularDependencies e) {
+		} catch (CircularDependenciesException e) {
 			System.out.println(e.getMessage());
 		}
 	}
@@ -89,9 +89,9 @@ public final class Excel {
 	/**
 	 * compute all cell in the data
 	 *
-	 * @throws CircularDependencies if something wrong
+	 * @throws CircularDependenciesException if something wrong
 	 */
-	public void compute() throws CircularDependencies {
+	public void compute() throws CircularDependenciesException {
 		while (!cellNeedComputation.isEmpty()) {
 			String nextCell = cellNeedComputation.stream().findAny().get();
 			Preconditions.checkArgument(!name2cellMap.get(nextCell).isComputed());
@@ -99,7 +99,7 @@ public final class Excel {
 		}
 	}
 
-	private double compute(String cellName) throws CircularDependencies {
+	private double compute(String cellName) throws CircularDependenciesException {
 		Cell cell = name2cellMap.get(cellName);
 		if (cell == null) {
 			// TODO we can just return 0 here, but the problem does not say it clearly, so better to notify user
@@ -111,7 +111,7 @@ public final class Excel {
 
 		// not computed
 		if (computingCell.contains(cellName)) {
-			throw new CircularDependencies(cellName, null);
+			throw new CircularDependenciesException(cellName, null);
 		}
 
 		Preconditions.checkArgument(cellNeedComputation.remove(cellName));
@@ -134,8 +134,8 @@ public final class Excel {
 				try {
 					double d = compute(s);
 					stack.push(d);
-				} catch (CircularDependencies e) {
-					throw new CircularDependencies(e.cellName1, s);
+				} catch (CircularDependenciesException e) {
+					throw new CircularDependenciesException(e.cellName1, s);
 				}
 			}
 		}
@@ -160,11 +160,11 @@ public final class Excel {
 		}
 	}
 
-	public static class CircularDependencies extends Exception {
+	public static class CircularDependenciesException extends Exception {
 		String cellName1;
 		String cellName2;
 
-		CircularDependencies(String cellName1, String cellName2) {
+		CircularDependenciesException(String cellName1, String cellName2) {
 			this.cellName1 = cellName1;
 			this.cellName2 = cellName2;
 		}

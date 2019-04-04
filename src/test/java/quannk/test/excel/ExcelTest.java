@@ -31,7 +31,7 @@ public class ExcelTest {
 	 * read the data folder and do auto test
 	 *
 	 * in.x contains input
-	 * out.x (if exists) contains expected output; if out.x does not exist, it means there should be a CircularDependencies
+	 * out.x (if exists) contains expected output; if out.x does not exist, it means there should be a CircularDependenciesException
 	 */
 	@Test
 	public void testAuto() throws IOException {
@@ -49,7 +49,7 @@ public class ExcelTest {
 				PrintStream ps = new PrintStream(baos);
 				excel.print(false, ps);
 				compareResult(new String(Files.readAllBytes(outFile.toPath())), baos.toString());
-			} catch (Excel.CircularDependencies e) {
+			} catch (Excel.CircularDependenciesException e) {
 				if (circularDependency) {
 					// ok, good
 					System.out.println(e.getMessage());
