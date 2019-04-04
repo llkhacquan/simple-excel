@@ -14,7 +14,14 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
+    // logging
     compile "org.slf4j:slf4j-log4j12:1.7.25"
     compile "org.slf4j:jcl-over-slf4j:1.7.25"
     compile "log4j:apache-log4j-extras:1.2.17"
+
+    // checking
+    compile group: 'com.google.guava', name: 'guava', version: '27.1-jre'
+
+    compile group: 'org.jetbrains', name: 'annotations', version: '17.0.0'
+
 }
