@@ -73,11 +73,11 @@ public class ExcelTest {
 				Assert.fail("Should fail here");
 			} catch (Excel.CircularDependenciesException e) {
 				// ok, good, now check the cause of circular dependency
-				if (e.cellName1.equals("B1")) {
-					Assert.assertEquals("B2", e.cellName2);
+				if (e.getCellName1().equals("B1")) {
+					Assert.assertEquals("B2", e.getCellName2());
 				} else {
-					Assert.assertEquals("B1", e.cellName2);
-					Assert.assertEquals("B2", e.cellName1);
+					Assert.assertEquals("B1", e.getCellName2());
+					Assert.assertEquals("B2", e.getCellName1());
 				}
 			}
 		}

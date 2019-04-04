@@ -144,7 +144,7 @@ public final class Excel {
 					double d = compute(s);
 					stack.push(d);
 				} catch (CircularDependenciesException e) {
-					throw new CircularDependenciesException(e.cellName1, s);
+					throw new CircularDependenciesException(e.getCellName1(), s);
 				}
 			}
 		}
@@ -170,8 +170,8 @@ public final class Excel {
 	}
 
 	public static class CircularDependenciesException extends Exception {
-		String cellName1;
-		String cellName2;
+		private final String cellName1;
+		private final String cellName2;
 
 		CircularDependenciesException(String cellName1, String cellName2) {
 			this.cellName1 = cellName1;
@@ -180,7 +180,15 @@ public final class Excel {
 
 		@Override
 		public String getMessage() {
-			return "Circular dependency between " + cellName1 + " and " + cellName2 + " detected";
+			return "Circular dependency between " + getCellName1() + " and " + getCellName2() + " detected";
+		}
+
+		public String getCellName1() {
+			return cellName1;
+		}
+
+		public String getCellName2() {
+			return cellName2;
 		}
 	}
 }
