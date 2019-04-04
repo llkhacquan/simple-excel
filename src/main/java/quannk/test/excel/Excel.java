@@ -8,12 +8,19 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.util.*;
 
+/**
+ * main class
+ */
 public final class Excel {
 
 	private static final Logger LOG = LoggerFactory.getLogger(Excel.class);
 
+	// holds names of cells which are in computing process;
 	private final Set<String> computingCell = new HashSet<>();
+
+	// holds names of cells whose values are formulas and waiting for computing
 	private final Set<String> cellNeedComputation = new HashSet<>();
+	// hold the data
 	private final Map<String, Cell> name2cellMap;
 
 	public Excel(Map<String, Cell> data) {
@@ -76,6 +83,7 @@ public final class Excel {
 			case "*":
 				return d1 * d2;
 			case "/":
+				// TODO handle zero division ???
 				return d1 / d2;
 			default:
 				throw new RuntimeException("Not a valid operator:" + operator);
@@ -90,6 +98,11 @@ public final class Excel {
 		return new HashMap<>(name2cellMap);
 	}
 
+	/**
+	 * print the data to the given {@link PrintStream}.
+	 *
+	 * @param niceView if it's true, the output is easier to read for human
+	 */
 	public void print(boolean niceView, PrintStream out) {
 		name2cellMap.values().stream().sorted(Comparator.comparing(Cell::getCellName)).forEach(cell -> {
 			if (niceView) {
@@ -103,7 +116,7 @@ public final class Excel {
 	/**
 	 * compute all cell in the data
 	 *
-	 * @throws CircularDependenciesException if something wrong
+	 * @throws CircularDependenciesException if there is circular dependency
 	 */
 	public void compute() throws CircularDependenciesException {
 		while (!cellNeedComputation.isEmpty()) {

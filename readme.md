@@ -4,6 +4,10 @@
 
 # HOW TO RUN
 
-From terminal: `./gradlew run` or `bash run.sh`
+From terminal:
+- Use `stdin` as input:`bash run.sh`
+- Use `file` as input `bash run.sh /path/to/file`
 
-But it is much better to run in IDE like Intelli 
+# NOTE
+- Does not handle zero division error
+- If a non-existing cell is required for computation, the application crashes (rather than use `0` value for non-existing cells)
